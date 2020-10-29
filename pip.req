@@ -1,1 +1,10 @@
 tqdm
+pem
+pyOpenSSL
+scapy
+lxml
+beautifulsoup4
+pyquery
+requests_html
+pywebcopy
+jinja2

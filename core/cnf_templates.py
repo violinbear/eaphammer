@@ -208,7 +208,7 @@ hostapd_wpe_cnf = '''
 # ------------------------------------------------
 #
 # Configuration file for hostapd-wpe
-# 
+#
 # General Options - Likely to need to be changed if you're using this
 
 # Interface - Probably wlan0 for 802.11, eth0 for wired
@@ -230,11 +230,11 @@ ssid=%s
 hw_mode=%s
 channel=%d
 
-# WPE Options - Dont need to change these to make it all work 
+# WPE Options - Dont need to change these to make it all work
 #
-wpe_logfile=%s
+eaphammer_logfile=%s
 # wpe_hb_send_before_handshake=0    # Heartbleed True/False (Default: 1)
-# wpe_hb_send_before_appdata=0      # Heartbleed True/False (Default: 0) 
+# wpe_hb_send_before_appdata=0      # Heartbleed True/False (Default: 0)
 # wpe_hb_send_after_appdata=0       # Heartbleed True/False (Default: 0)
 # wpe_hb_payload_size=0             # Heartbleed 0-65535 (Default: 50000)
 # wpe_hb_num_repeats=0              # Heartbleed 0-65535 (Default: 1)
@@ -2016,8 +2016,8 @@ bssid=%s
 # ...
 
 use_karma=%d
-eaphammer_use_autocrack=%d
-eaphammer_fifo_path=%s
+use_autocrack=%d
+autocrack_fifo_path=%s
 '''
 
 dnsmasq_dhcp_only = '''
@@ -2028,15 +2028,16 @@ except-interface=lo
 port=0
 
 # DHCP configs
-dhcp-range=10.0.0.100,10.0.0.254,1h
-dhcp-option=6,10.0.0.1 #DNS
-dhcp-option=3,10.0.0.1 #Gateway
+dhcp-range=%s,%s,1h
+dhcp-option=6,%s #DNS
+dhcp-option=3,%s #Gateway
 dhcp-authoritative
 log-queries
 log-dhcp
 log-facility=%s
 dhcp-script=%s
 '''
+# % (interface, dhcp_start, dhcp_end, lhost, lhost, log_file, dhcp_script))
 
 dnsmasq_captive_portal = '''
 # general configs
@@ -2045,9 +2046,9 @@ interface=%s
 except-interface=lo
 
 # DHCP configs
-dhcp-range=10.0.0.100,10.0.0.254,1h
-dhcp-option=6,10.0.0.1 #DNS
-dhcp-option=3,10.0.0.1 #Gateway
+dhcp-range=%s,%s,1h
+dhcp-option=6,%s #DNS
+dhcp-option=3,%s #Gateway
 dhcp-authoritative
 log-queries
 log-dhcp
@@ -2055,8 +2056,9 @@ log-facility=%s
 dhcp-script=%s
 
 # DNS configs
-address=/#/10.0.0.1
+address=/#/%s
 '''
+# % (interface, dhcp_start, dhcp_end, lhost, lhost, log_file, dhcp_script, lhost)
 
 responder_cnf = '''
 [Responder Core]
@@ -2096,11 +2098,11 @@ RespondTo =
 
 ; Specific NBT-NS/LLMNR names to respond to (default = All)
 ; Example: RespondTo = WPAD, DEV, PROD, SQLINT
-RespondToName = 
+RespondToName =
 
 ; Specific IP Addresses not to respond to (default = None)
 ; Example: DontRespondTo = 10.20.1.100-150, 10.20.3.10
-DontRespondTo = 
+DontRespondTo =
 
 ; Specific NBT-NS/LLMNR names not to respond to (default = None)
 ; Example: DontRespondTo = NAC, IPS, IDS
@@ -2150,4 +2152,4 @@ HTMLToInject = <img src='file://RespProxySrv/pictures/logo.jpg' alt='Loading' he
 SSLCert = certs/responder.crt
 SSLKey = certs/responder.key
 
-''' 
+'''
